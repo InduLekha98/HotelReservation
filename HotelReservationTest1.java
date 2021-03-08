@@ -9,7 +9,7 @@ public class HotelReservationTest1 {
     @Test
     public void givenHotel_whenInvokeAddHotel_shoulBeAbleToAdd() {
         HotelReservationService hotelReservationService = new HotelReservationService();
-        Hotel hotel = new Hotel("Bridgewood", 160);
+        Hotel hotel = new Hotel("Bridgewood", 160,50);
         hotelReservationService.addHotel(hotel);
         List hotelList = hotelReservationService.getHotels();
         Assertions.assertTrue(hotelList.contains(hotel));
@@ -18,9 +18,9 @@ public class HotelReservationTest1 {
     @Test
     public void given3Hotels_whenInvokeFindCheapestHotel_shouldBeAbleToReturnCheapestHotel() {
         HotelReservationService hotelReservationService = new HotelReservationService();
-        Hotel Lakewood = new Hotel("Lakewood",110);
-        Hotel Bridgewood = new Hotel("Bridgewood",160);
-        Hotel RidgeWood = new Hotel("Ridgewood",220);
+        Hotel Lakewood = new Hotel("Lakewood",110,90);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150);
         hotelReservationService.addHotel(Lakewood);
         hotelReservationService.addHotel(Bridgewood);
         hotelReservationService.addHotel(RidgeWood);
@@ -32,4 +32,3 @@ public class HotelReservationTest1 {
     }
 
 }
-
