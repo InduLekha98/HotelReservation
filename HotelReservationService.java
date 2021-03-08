@@ -1,3 +1,10 @@
+package com.hotel;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -20,7 +27,7 @@ public class HotelReservationService {
 
     public Hotel findCheapestHotel(int countDays) {
         HotelList.stream().map(p -> {p.setRate(countDays); return p.getRate(); }).collect(Collectors.toList());
-        Hotel cheapestRate =  HotelList.stream().min(Comparator.comparing(Hotel::getRate)).orElseThrow(NoSuchElementException::new);
-        return cheapestRate;
+        Hotel minimumRate =  HotelList.stream().min(Comparator.comparing(Hotel::getWeekDayRates)).orElseThrow(NoSuchElementException::new);
+        return minimumRate;
     }
 }
