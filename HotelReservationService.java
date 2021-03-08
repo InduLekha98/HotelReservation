@@ -1,8 +1,6 @@
 package com.hotel;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,9 +23,12 @@ public class HotelReservationService {
         return  (int) ChronoUnit.DAYS.between(startDate,endDate);
     }
 
-    public Hotel findCheapestHotel(int countDays) {
-        HotelList.stream().map(p -> {p.setRate(countDays); return p.getRate(); }).collect(Collectors.toList());
-        Hotel minimumRate =  HotelList.stream().min(Comparator.comparing(Hotel::getWeekDayRates)).orElseThrow(NoSuchElementException::new);
+    public Hotel getCheapestHotel(String date1, String date2){
+       long totalWeekDays = noOfWeekDays(date1,date2);
+       long totalWeekEndDays = noOfWeekEnds(date1,date2) (date1,date2);
+        HotelList.stream().map(r -> { r.setRate(totalWeekDays,totalWeekEndDays);return r.getRate(); }).collect(Collectors.toList());
+        Hotel minimumRate = HotelList.stream().min(Comparator.comparing(Hotel::getWeekDayRates)).orElseThrow(NoSuchElementException::new);
         return minimumRate;
     }
-}
+    }
+
