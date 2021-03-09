@@ -1,108 +1,110 @@
 package com.hotel;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import com.hotel.Hotel;
+import com.hotel.HotelReservationService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class HotelReservationService {
-    public static Scanner sc = new Scanner(System.in);
-    private ArrayList<Hotel> hotelList = new ArrayList<Hotel>();
-    static long totalDays, totalWeekDays, totalWeekEndDays;
+import java.util.List;
 
-    //Adding hotel.
-    public void addHotel(Hotel hotel) {
-        hotelList.add(hotel);
+public class HotelReservationTest1<result> {
+
+    @Test
+    public void givenHotel_ShouldReturnTrue() {
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel hotel = new Hotel("Lakewood",110,90,3);
+        hotelReservationService.addHotel(hotel);
+        List hotelList = hotelReservationService.getHotelList();
+        System.out.println(hotelList);
+        Assertions.assertTrue(hotelList.contains(hotel));
     }
 
-    public void getHotelDetails() {
-        Hotel hotel1 = new Hotel("LakeWood", 110, 90, 3);
-        Hotel hotel2 = new Hotel("BridgeWood", 150, 50, 4);
-        Hotel hotel3 = new Hotel("RidgeWood", 220, 150, 5);
-        hotelList.add(hotel1);
-        hotelList.add(hotel2);
-        hotelList.add(hotel3);
+    @Test
+    public void givenHotels_shouldReturnCheapestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        System.out.println(hotelList);
+//          long days = hotelReservation.noOfWeekEnds("10-09-2021","12-09-2021");
+        Hotel result = hotelReservationService.getCheapestHotel("10-09-2021","12-09-2021");
+        Assertions.assertTrue(hotelList.contains(result));
     }
 
-    public ArrayList<Hotel> getHotelList() {
-        return hotelList;
+    @Test
+    public void givenDateRange_shouldReturnCheapestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        System.out.println(hotelList);
+        Hotel result = hotelReservationService.getCheapestHotel("2020-09-10","2020-09-12");
+        Assertions.assertTrue(hotelList.contains(result));
     }
 
-    public void setHotelList(ArrayList<Hotel> hotelList) {
-        this.hotelList = hotelList;
+    @Test
+    public void givenDateRange_basisOfWeekDayWeekEnd_shouldReturnCheapestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getCheapestHotel("2020-09-11","2020-09-12");
+        Assertions.assertTrue(hotelList.contains(result));
     }
 
-    //To count number of days from the given range of date.
-    public long noOfWeekDays(String date1, String date2) {
-        LocalDate startDate = LocalDate.parse(date1);
-        LocalDate endDate = LocalDate.parse(date2);
-        DayOfWeek start = startDate.getDayOfWeek();
-        DayOfWeek end = endDate.getDayOfWeek();
-        totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-        totalDays = totalDays + 1;
-        totalWeekEndDays = getTotalWeekEndDays(startDate, endDate);
-        totalWeekDays = totalDays - totalWeekEndDays;
-        System.out.println(totalWeekDays);
-        return totalWeekDays;
+    @Test
+    public void givenDates_basisOfWeekDayWeekEnd_shouldReturnCheapestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getCheapestHotel("2020-09-11","2020-09-12");
+        Assertions.assertTrue(hotelList.contains(result));
     }
 
-    public long noOfWeekEnds(String date1, String date2) {
-        LocalDate startDate = LocalDate.parse(date1);
-        LocalDate endDate = LocalDate.parse(date2);
-        long weekEndDays = 0;
-        LocalDate next = startDate.minusDays(1);
-        //iterate from start date to end date
-        while ((next = next.plusDays(1)).isBefore(endDate.plusDays(1))) {
-            if (next.getDayOfWeek().toString().equals("SATURDAY") || next.getDayOfWeek().toString().equals("SUNDAY")) {
-                totalWeekEndDays++;
-            }
-        }
-        return (int) totalWeekEndDays;
-//        totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-//        totalDays = totalDays + 1;
-//        totalWeekEndDays = getTotalWeekEndDays(startDate, endDate);
-//        totalWeekDays = totalDays - totalWeekEndDays;
-//        System.out.println(totalWeekDays);
-//        return totalWeekDays;
+    @Test
+    public void givenDates_basisOfWeekDayWeekEnd_shouldReturnBestCheapestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getBestCheapHotel("2020-09-11","2020-09-12");
+        Assertions.assertTrue(hotelList.contains(result));
     }
 
-    public int getTotalWeekEndDays(LocalDate start, LocalDate end) {
-        long weekEndDays = 0;
-        LocalDate next = start.minusDays(1);
-        //iterate from start date to end date
-        long totalWeekEndDays = 0;
-        while ((next = next.plusDays(1)).isBefore(end.plusDays(1))) {
-            if (next.getDayOfWeek().toString().equals("SATURDAY") || next.getDayOfWeek().toString().equals("SUNDAY")) {
-                totalWeekEndDays++;
-            }
-        }
-        return (int) totalWeekEndDays;
+    @Test
+    public void givenDates_basisOfWeekDayWeekEnd_shouldReturnBestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getBestRatedHotel("2020-09-11","2020-09-12");
+        Assertions.assertTrue(hotelList.contains(result));
     }
 
-    //To get the cheapest hotel.
-    public Hotel getCheapestHotel(String date1, String date2) {
-        totalWeekDays = noOfWeekDays(date1, date2);
-        totalWeekEndDays = noOfWeekEnds(date1, date2);
-        hotelList.stream().map(r -> {
-            r.setRate(totalWeekDays, totalWeekEndDays);
-            return r.getRate();
-        }).collect(Collectors.toList());
-        Hotel minRate = hotelList.stream()
-                .min(Comparator.comparing(Hotel::getWeekDayRates))
-                .orElseThrow(NoSuchElementException::new);
-        return minRate;
-    }
 
-    public Hotel getBestCheapHotel(String date1, String date2) {
-        Hotel minRate = getCheapestHotel(date1, date2);
-        int cheapestRate = minRate.getRate();
-        Predicate<Hotel> minPrice = rate -> rate.getRate() == cheapestRate;
-        List<Hotel> minPriceHotel = hotelList.stream().
-                filter(minPrice).collect(Collectors.toList());
-        Hotel maxRatings = minPriceHotel.stream().max(Comparator.comparing(Hotel::getRatings))
-                .orElseThrow(NoSuchElementException::new);
-        return maxRatings;
-    }
 }
