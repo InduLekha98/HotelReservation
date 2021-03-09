@@ -8,9 +8,13 @@ public class HotelReservationTest1 {
     @Test
     public void givenHotel_whenInvokeAddHotel_shoulBeAbleToAdd() {
         HotelReservationService hotelReservationService = new HotelReservationService();
+<<<<<<< HEAD
         Hotel hotel = new Hotel("Bridgewood", 160,50);
+=======
+        Hotel hotel = new Hotel("Lakewood", 110,90);
+>>>>>>> UC5
         hotelReservationService.addHotel(hotel);
-        List hotelList = hotelReservationService.getHotels();
+        List hotelList = hotelReservationService.getHotelList().subList();
         Assertions.assertTrue(hotelList.contains(hotel));
     }
 
@@ -27,7 +31,11 @@ public class HotelReservationTest1 {
         System.out.println(countNumberOfDays);
         Hotel result = hotelReservationService.findCheapestHotel(countNumberOfDays);
         System.out.println(result);
+<<<<<<< HEAD
         Assertions.assertTrue(hotelReservationService.HotelList.contains(result));
+=======
+        Assertions.assertTrue(hotelReservationService.getHotelList().contains(result));
+>>>>>>> UC5
     }
     @Test
     public void givenDateRange_basisOfWeekDayWeekEnd_shouldReturnCheapestHotel(){
@@ -43,6 +51,24 @@ public class HotelReservationTest1 {
         Assertions.assertTrue(HotelList.contains(result));
     }
 
+<<<<<<< HEAD
+=======
+    @Test
+    public void givenDates_basisOfWeekDayWeekEnd_shouldReturnCheapestHotel(){
+        HotelReservationService hotelReservationService = new HotelReservationService();
+        Hotel Lakewood = new Hotel("Lakewood",110,90,3);
+        Hotel Bridgewood = new Hotel("Bridgewood",160,50,4);
+        Hotel RidgeWood = new Hotel("Ridgewood",220,150,5);
+        hotelReservationService.addHotel(Lakewood);
+        hotelReservationService.addHotel(Bridgewood);
+        hotelReservationService.addHotel(RidgeWood);
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getCheapestHotel("2020-09-11","2020-09-12");
+        Assertions.assertTrue(hotelList.contains(result));
+    }
+
+
+>>>>>>> UC5
 
 }
 
