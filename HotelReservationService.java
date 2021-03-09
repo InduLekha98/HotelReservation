@@ -1,54 +1,22 @@
 package com.hotel;
 
-<<<<<<< HEAD
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-=======
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Predicate;
->>>>>>> UC5
 import java.util.stream.Collectors;
 
-
 public class HotelReservationService {
-<<<<<<< HEAD
-    List<Hotel> HotelList = new ArrayList<>();
-=======
     public static Scanner sc = new Scanner(System.in);
     private ArrayList<Hotel> hotelList = new ArrayList<Hotel>();
     static long totalDays, totalWeekDays, totalWeekEndDays;
->>>>>>> UC5
 
     //Adding hotel.
     public void addHotel(Hotel hotel) {
-        HotelList.add(hotel);
-        System.out.println(HotelList);
-
-<<<<<<< HEAD
-    }
-    public List<Hotel> getHotels() {
-        return HotelList;
-    }
-    public int countDays(String firstDate,String lastDate) {
-        LocalDate startDate = LocalDate.parse(firstDate);
-        LocalDate endDate = LocalDate.parse(lastDate);
-        return  (int) ChronoUnit.DAYS.between(startDate,endDate);
+        hotelList.add(hotel);
     }
 
-    public Hotel getCheapestHotel(String date1, String date2){
-       long totalWeekDays = noOfWeekDays(date1,date2);
-       long totalWeekEndDays = noOfWeekEnds(date1,date2) (date1,date2);
-        HotelList.stream().map(r -> { r.setRate(totalWeekDays,totalWeekEndDays);return r.getRate(); }).collect(Collectors.toList());
-        Hotel minimumRate = HotelList.stream().min(Comparator.comparing(Hotel::getWeekDayRates)).orElseThrow(NoSuchElementException::new);
-        return minimumRate;
-    }
-    }
-
-=======
     public void getHotelDetails() {
         Hotel hotel1 = new Hotel("LakeWood", 110, 90, 3);
         Hotel hotel2 = new Hotel("BridgeWood", 150, 50, 4);
@@ -121,8 +89,20 @@ public class HotelReservationService {
             r.setRate(totalWeekDays, totalWeekEndDays);
             return r.getRate();
         }).collect(Collectors.toList());
-        Hotel minimumRate = hotelList.stream().min(Comparator.comparing(Hotel::getWeekDayRates)).orElseThrow(NoSuchElementException::new);
-        return minimumRate;
+        Hotel minRate = hotelList.stream()
+                .min(Comparator.comparing(Hotel::getWeekDayRates))
+                .orElseThrow(NoSuchElementException::new);
+        return minRate;
+    }
+
+    public Hotel getBestCheapHotel(String date1, String date2) {
+        Hotel minRate = getCheapestHotel(date1, date2);
+        int cheapestRate = minRate.getRate();
+        Predicate<Hotel> minPrice = rate -> rate.getRate() == cheapestRate;
+        List<Hotel> minPriceHotel = hotelList.stream().
+                filter(minPrice).collect(Collectors.toList());
+        Hotel maxRatings = minPriceHotel.stream().max(Comparator.comparing(Hotel::getRatings))
+                .orElseThrow(NoSuchElementException::new);
+        return maxRatings;
     }
 }
->>>>>>> UC5
