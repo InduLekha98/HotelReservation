@@ -8,7 +8,7 @@ import java.util.List;
 public class HotelReservationTest1 {
 
     @Test
-    public void givenHotel_whenInvokeAddHotel_shouldReturnTrue() {
+    public void givenHotel_whenInvokeAddHotel_shouldBeAbleToReturnTrue() {
         HotelReservationService hotelReservationService = new HotelReservationService();
         Hotel hotel = new Hotel("Bridgewood", 160);
         hotelReservationService.addHotel(hotel);
