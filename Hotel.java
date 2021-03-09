@@ -1,6 +1,4 @@
-package com.hotelresservation;
-
-import java.util.Scanner;
+package com.hotel;
 
 import java.util.Scanner;
 
@@ -9,16 +7,10 @@ public class Hotel {
     public int weekDayRates;
     public int weekEndRates;
     public int rates;
-<<<<<<< HEAD
-    public Scanner sc = new Scanner(System.in);
-
-    public Hotel(String hotelName, int weekDayRates, int weekEndRates) {
-=======
     public int ratings;
     public Scanner sc = new Scanner(System.in);
 
     public Hotel(String hotelName, int weekDayRates, int weekEndRates, int ratings) {
->>>>>>> UC5
         this.hotelName = hotelName;
         this.weekDayRates = weekDayRates;
     }
@@ -55,10 +47,12 @@ public class Hotel {
         this.rates = weekDayRates + weekEndRates;
     }
 
-<<<<<<< HEAD
-=======
+    public int getRatings() {
+        return ratings;
+    }
 
->>>>>>> UC5
+
+
     @Override
     public String toString() {
         String hotel = "Hotel : " + this.getHotelName() +"\nWeekDayRate : " +this.getWeekDayRates();
