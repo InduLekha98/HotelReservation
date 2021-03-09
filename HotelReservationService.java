@@ -105,4 +105,10 @@ public class HotelReservationService {
                 .orElseThrow(NoSuchElementException::new);
         return maxRatings;
     }
+
+    public Hotel getBestRatedHotel(String date1, String date2) {
+        Hotel maxRatings = hotelList.stream().max(Comparator.comparing(Hotel::getRatings))
+                .orElseThrow(NoSuchElementException::new);
+        return maxRatings;
+    }
 }
