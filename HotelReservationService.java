@@ -18,9 +18,10 @@ public class HotelReservationService {
     }
 
     public void getHotelDetails() {
-        Hotel hotel1 = new Hotel("LakeWood", 110, 90, 3);
-        Hotel hotel2 = new Hotel("BridgeWood", 150, 50, 4);
-        Hotel hotel3 = new Hotel("RidgeWood", 220, 150, 5);
+
+        Hotel hotel1 = new Hotel("Lakewood", 110, 90, 80, 80, 3);
+        Hotel hotel2 = new Hotel("Bridgewood", 150, 50, 110, 50, 4);
+        Hotel hotel3 = new Hotel("Ridgewood", 220, 150, 100, 40, 5);
         hotelList.add(hotel1);
         hotelList.add(hotel2);
         hotelList.add(hotel3);
@@ -60,12 +61,6 @@ public class HotelReservationService {
             }
         }
         return (int) totalWeekEndDays;
-//        totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-//        totalDays = totalDays + 1;
-//        totalWeekEndDays = getTotalWeekEndDays(startDate, endDate);
-//        totalWeekDays = totalDays - totalWeekEndDays;
-//        System.out.println(totalWeekDays);
-//        return totalWeekDays;
     }
 
     public int getTotalWeekEndDays(LocalDate start, LocalDate end) {
@@ -86,19 +81,20 @@ public class HotelReservationService {
         totalWeekDays = noOfWeekDays(date1, date2);
         totalWeekEndDays = noOfWeekEnds(date1, date2);
         hotelList.stream().map(r -> {
-            r.setRate(totalWeekDays, totalWeekEndDays);
-            return r.getRate();
+            r.setRewardRates(totalWeekDays, totalWeekEndDays);
+            return r.getRewardRates();
         }).collect(Collectors.toList());
         Hotel minRate = hotelList.stream()
-                .min(Comparator.comparing(Hotel::getWeekDayRates))
+                .min(Comparator.comparing(Hotel::getRewardRates))
                 .orElseThrow(NoSuchElementException::new);
         return minRate;
     }
 
+    //Cheap best rated cheap hotel.
     public Hotel getBestCheapHotel(String date1, String date2) {
         Hotel minRate = getCheapestHotel(date1, date2);
-        int cheapestRate = minRate.getRate();
-        Predicate<Hotel> minPrice = rate -> rate.getRate() == cheapestRate;
+        int cheapestRate = minRate.getRewardRates();
+        Predicate<Hotel> minPrice = rate -> rate.getRewardRates() == cheapestRate;
         List<Hotel> minPriceHotel = hotelList.stream().
                 filter(minPrice).collect(Collectors.toList());
         Hotel maxRatings = minPriceHotel.stream().max(Comparator.comparing(Hotel::getRatings))
@@ -106,6 +102,7 @@ public class HotelReservationService {
         return maxRatings;
     }
 
+    //to get best rated hotel.
     public Hotel getBestRatedHotel(String date1, String date2) {
         Hotel maxRatings = hotelList.stream().max(Comparator.comparing(Hotel::getRatings))
                 .orElseThrow(NoSuchElementException::new);
