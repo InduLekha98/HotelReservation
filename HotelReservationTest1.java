@@ -67,7 +67,7 @@ public class HotelReservationTest1<result> {
     public void givenDates_basisOfWeekDayWeekEnd_shouldReturnBestCheapestHotel(){
         addHotelData();
         List hotelList = hotelReservationService.getHotelList();
-        Hotel result = hotelReservationService.getBestCheapHotel("2020-09-11","2020-09-12");
+        Hotel result = hotelReservationService.getBestCheapHotel("2020-09-11","2020-09-12","Regular");
         Assertions.assertTrue(hotelList.contains(result));
     }
 
@@ -93,6 +93,15 @@ public class HotelReservationTest1<result> {
         List hotelList = hotelReservationService.getHotelList();
         Hotel result = hotelReservationService.addHotel_CustomerType("2020-09-11","2020-09-12","Reward");
         Assertions.assertTrue(hotelList.contains(result));
+    }
+
+    @Test
+    public void givenDate_forRewardCustomer_shouldReturnTrue(){
+        addHotelData();
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getBestCheapHotel("2020-09-11","2020-09-12","Reward");
+        Assertions.assertTrue(hotelList.contains(result));
+
     }
 
 }
