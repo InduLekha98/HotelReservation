@@ -104,4 +104,11 @@ public class HotelReservationTest1<result> {
 
     }
 
+    @Test
+    public void givenDates_forRegularCustomer_shouldReturnTrue(){
+        addHotelData();
+        List hotelList = hotelReservationService.getHotelList();
+        Hotel result = hotelReservationService.getBestCheapHotel("2020-09-11","2020-09-12","Regular");
+        Assertions.assertTrue(hotelList.contains(result));
+    }
 }
