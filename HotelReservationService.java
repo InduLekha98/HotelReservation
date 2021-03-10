@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 public class HotelReservationService {
     public static Scanner sc = new Scanner(System.in);
     private ArrayList<Hotel> hotelList = new ArrayList<Hotel>();
-    static long totalDays, totalWeekDays, totalWeekEndDays;
+    static long totalDays,totalWeekDays,totalWeekEndDays;
 
     //Adding hotel.
-    public void addHotel(Hotel hotel) {
+    public void addHotel(Hotel hotel){
         hotelList.add(hotel);
     }
 
-    public void getHotelDetails() {
+    public void getHotelDetails(){
 
-        Hotel hotel1 = new Hotel("Lakewood", 110, 90, 80, 80, 3);
-        Hotel hotel2 = new Hotel("Bridgewood", 150, 50, 110, 50, 4);
-        Hotel hotel3 = new Hotel("Ridgewood", 220, 150, 100, 40, 5);
+        Hotel hotel1 = new Hotel("Lakewood",110,90,80,80,3);
+        Hotel hotel2 = new Hotel("Bridgewood",150,50,110,50,4);
+        Hotel hotel3 = new Hotel("Ridgewood",220,150,100,40,5);
         hotelList.add(hotel1);
         hotelList.add(hotel2);
         hotelList.add(hotel3);
@@ -66,7 +66,8 @@ public class HotelReservationService {
                     totalWeekEndDays++;
                 }
             }
-        } catch (DateTimeException e) {
+        }
+        catch(DateTimeException e){
             System.out.println("Invalid Date Entry");
             e.printStackTrace();
         }
@@ -79,19 +80,19 @@ public class HotelReservationService {
         //iterate from start date to end date
         long totalWeekEndDays = 0;
         while ((next = next.plusDays(1)).isBefore(end.plusDays(1))) {
-            if (next.getDayOfWeek().toString().equals("SATURDAY") || next.getDayOfWeek().toString().equals("SUNDAY")) {
+            if(next.getDayOfWeek().toString().equals("SATURDAY") || next.getDayOfWeek().toString().equals("SUNDAY")) {
                 totalWeekEndDays++;
             }
         }
-        return (int) totalWeekEndDays;
+        return (int)totalWeekEndDays;
     }
 
     //To get the cheapest hotel.
-    public Hotel getCheapestHotel(String date1, String date2) {
-        totalWeekDays = noOfWeekDays(date1, date2);
-        totalWeekEndDays = noOfWeekEnds(date1, date2);
+    public Hotel getCheapestHotel(String date1, String date2){
+        totalWeekDays = noOfWeekDays(date1,date2);
+        totalWeekEndDays = noOfWeekEnds(date1,date2);
         hotelList.stream().map(r -> {
-            r.setRewardRates(totalWeekDays, totalWeekEndDays);
+            r.setRewardRates(totalWeekDays,totalWeekEndDays);
             return r.getRewardRates();
         }).collect(Collectors.toList());
         Hotel minRate = hotelList.stream()
@@ -99,50 +100,50 @@ public class HotelReservationService {
                 .orElseThrow(NoSuchElementException::new);
         return minRate;
     }
-
     //Cheap best rated cheap hotel.
-    public Hotel getBestCheapHotel(String date1, String date2) {
-        Hotel minRate = getCheapestHotel(date1, date2);
+    public Hotel getBestCheapHotel(String date1, String date2,String customerType){
+        Hotel minRate = getCheapestHotel(date1,date2);
         int cheapestRate = minRate.getRewardRates();
-        Predicate<Hotel> minPrice = rate -> rate.getRewardRates() == cheapestRate;
+        Predicate<Hotel> minPrice = rate -> rate.getRewardRates()==cheapestRate;
         List<Hotel> minPriceHotel = hotelList.stream().
                 filter(minPrice).collect(Collectors.toList());
         Hotel maxRatings = minPriceHotel.stream().max(Comparator.comparing(Hotel::getRatings))
                 .orElseThrow(NoSuchElementException::new);
         return maxRatings;
     }
-
     //to get best rated hotel.
-    public Hotel getBestRatedHotel(String date1, String date2) {
+    public Hotel getBestRatedHotel(String date1, String date2){
         Hotel maxRatings = hotelList.stream().max(Comparator.comparing(Hotel::getRatings))
                 .orElseThrow(NoSuchElementException::new);
         return maxRatings;
     }
-
-    public Hotel addHotel_CustomerType(String date1, String date2, String customerType) {
+    public Hotel addHotel_CustomerType(String date1, String date2, String customerType){
         try {
-            if (customerType.equals("Regular")) {
-                Hotel minRate = getCheapestHotel(date1, date2);
+            if(customerType.equals("Regular")) {
+                Hotel minRate = getCheapestHotel(date1,date2);
                 int cheapestRate = minRate.getRegularRates();
-                Predicate<Hotel> minPrice = rate -> rate.getRegularRates() == cheapestRate;
+                Predicate<Hotel> minPrice = rate -> rate.getRegularRates()==cheapestRate;
                 List<Hotel> minPriceHotel = hotelList.stream().
                         filter(minPrice).collect(Collectors.toList());
                 Hotel maxRatings = minPriceHotel.stream().max(Comparator.comparing(Hotel::getRatings))
                         .orElseThrow(NoSuchElementException::new);
                 return maxRatings;
-            } else if (customerType.equals("Reward")) {
-                Hotel minRate = getCheapestHotel(date1, date2);
+            }
+            else if(customerType.equals("Reward")){
+                Hotel minRate = getCheapestHotel(date1,date2);
                 int cheapestRate = minRate.getRewardRates();
-                Predicate<Hotel> minPrice = rate -> rate.getRewardRates() == cheapestRate;
+                Predicate<Hotel> minPrice = rate -> rate.getRewardRates()==cheapestRate;
                 List<Hotel> minPriceHotel = hotelList.stream().
                         filter(minPrice).collect(Collectors.toList());
                 Hotel maxRatings = minPriceHotel.stream().max(Comparator.comparing(Hotel::getRatings))
                         .orElseThrow(NoSuchElementException::new);
                 return maxRatings;
-            } else {
+            }
+            else {
                 throw new InvalidEntryException("Invalid Customer Type");
             }
-        } catch (InvalidEntryException exception) {
+        }
+        catch(InvalidEntryException exception) {
             System.out.println(exception);
         }
         return Hotel.maxRatings;
